@@ -1,0 +1,12 @@
+dlt
+fastparquet
+fastexcel
+great_expectations
+httpx
+mechanicalsoup
+openpyxl
+pandas
+pandera
+polars
+sodapy
+xmltodict
