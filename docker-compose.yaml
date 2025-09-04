@@ -62,6 +62,7 @@ x-airflow-common:
     AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: 'America/New_York'
     AIRFLOW__SCHEDULER__MIN_FILE_PROCESS_INTERVAL: '10' # set dag folder refresh in seconds
     AIRFLOW__STANDARD__VENV_INSTALL_METHOD: 'uv'
+    AIRFLOW__API__WORKERS: 8
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://airflow-apiserver:8080/execution/'
     # yamllint disable rule:line-length
@@ -72,9 +73,13 @@ x-airflow-common:
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}
-    FLASK_LIMITER_STORAGE_URI: "redis://redis:6379"
     # The following line can be used to set a custom config file, stored in the local config folder
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
+    AIRFLOW__FAB__CONFIG_FILE: '/opt/airflow/config/webserver_config.py'
+    AAD_TENANT_ID: ${AAD_TENANT_ID}
+    AAD_CLIENT_ID: ${AAD_CLIENT_ID}
+    AAD_CLIENT_SECRET: ${AAD_CLIENT_SECRET}
+    AZURE_REDIRECT_URI: ${AZURE_REDIRECT_URI}
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
@@ -286,7 +291,6 @@ services:
       - airflow
     depends_on:
       <<: *airflow-common-depends-on
-
 
 volumes:
   postgres-db-volume:
