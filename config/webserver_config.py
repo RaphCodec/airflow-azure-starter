@@ -14,6 +14,8 @@ AUTH_ROLES_MAPPING = {
     "airflow_prod_user": ["Op"],
     "airflow_prod_viewer": ["Viewer"]
 }
+# force users to re-auth after 30min of inactivity (to keep roles in sync)
+PERMANENT_SESSION_LIFETIME = 1800
 
 # If you wish, you can add multiple OAuth providers.
 OAUTH_PROVIDERS = [
@@ -22,23 +24,22 @@ OAUTH_PROVIDERS = [
         "icon": "fa-windows",
         "token_key": "access_token",
         "remote_app": {
-            "api_base_url": "https://login.microsoftonline.com/{}/".format(os.getenv("OAUTH_TENANT_ID")),
+            "api_base_url": "https://login.microsoftonline.com/{}/".format(os.getenv("AAD_TENANT_ID")),
             "request_token_url": None,
             "request_token_params": {
                 "scope": "openid email profile"
             },
-            "access_token_url": "https://login.microsoftonline.com/{}/oauth2/v2.0/token".format(os.getenv("OAUTH_TENANT_ID")),
+            "access_token_url": "https://login.microsoftonline.com/{}/oauth2/v2.0/token".format(os.getenv("AAD_TENANT_ID")),
             "access_token_params": {
                 "scope": "openid email profile"
             },
-            "authorization_url": "https://login.microsoftonline.com/{}/oauth2/v2.0/authorize".format(os.getenv("OAUTH_TENANT_ID")),
+            "authorization_url": "https://login.microsoftonline.com/{}/oauth2/v2.0/authorize".format(os.getenv("AAD_TENANT_ID")),
             "authorization_params": {
                 "scope": "openid email profile"
             },
-            "client_id": os.getenv("OAUTH_CLIENT_ID"),
-            "client_secret": os.getenv("OAUTH_CLIENT_SECRET"),
+            "client_id": os.getenv("AAD_CLIENT_ID"),
+            "client_secret": os.getenv("AAD_CLIENT_SECRET"),
             "jwks_uri": "https://login.microsoftonline.com/common/discovery/v2.0/keys",
-            "redirect_uri": "https://raphflow.com/oauth2/redirect"
         },
     },
 ]
