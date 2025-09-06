@@ -1,0 +1,3 @@
+airflow.local {
+    reverse_proxy airflow-apiserver:8080
+}
