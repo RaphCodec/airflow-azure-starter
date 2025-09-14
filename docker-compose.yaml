@@ -60,6 +60,8 @@ x-airflow-common:
     AIRFLOW__CORE__AUTH_MANAGER: airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__FERNET_KEY: "${FERNET_KEY}"
+    AIRFLOW__SECRETS__BACKEND: airflow.providers.microsoft.azure.secrets.key_vault.AzureKeyVaultBackend
+    AIRFLOW__SECRETS__BACKEND_KWARGS: '{"connections_prefix": "air-conn", "variables_prefix": "air-var", "vault_url": "https://${KEYVAULT_NAME}.vault.azure.net/"}'
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__DEFAULT_TIMEZONE: 'America/New_York'
     AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: 'America/New_York'

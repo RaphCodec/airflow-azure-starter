@@ -33,21 +33,28 @@ AAD_CLIENT_ID=$(az keyvault secret show --vault-name "$KEYVAULT_NAME" --name aad
 AAD_CLIENT_SECRET=$(az keyvault secret show --vault-name "$KEYVAULT_NAME" --name aad-client-secret --query value -o tsv)
 
 
-# Write to temporary .env
-cat > .env <<EOF
+# Always resolve paths relative to this script's directory
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)"
+PARENT_DIR="$(dirname "$SCRIPT_DIR")"
+
+# Write to temporary .env in parent directory
+cat > "$PARENT_DIR/.env" <<EOF
 AIRFLOW_UID=$AIRFLOW_UID
 DOMAIN_NAME=$DOMAIN_NAME
 FERNET_KEY=$FERNET_KEY
 AAD_TENANT_ID=$AAD_TENANT_ID
 AAD_CLIENT_ID=$AAD_CLIENT_ID
 AAD_CLIENT_SECRET=$AAD_CLIENT_SECRET
+KEYVAULT_NAME=$KEYVAULT_NAME
 EOF
 
-# Start Airflow with Docker Compose
+# Start Airflow with Docker Compose from parent directory
+pushd "$PARENT_DIR"
 sudo docker compose up -d
+popd
 
-# Permanently remove .env
-shred -u .env
+# Permanently remove .env from parent directory
+shred -u "$PARENT_DIR/.env"
 
 # Show running containers
 sudo docker ps
