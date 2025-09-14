@@ -31,7 +31,6 @@ OAUTH_PROVIDERS = [
             "request_token_url": None,
             "client_id": os.environ.get('AAD_CLIENT_ID'),
             "client_secret": os.environ.get('AAD_CLIENT_SECRET'),
-            "redirect_uri": os.environ.get('AZURE_REDIRECT_URI', "http://localhost:8080/oauth-authorized/azure")
         },
     },
 ]
