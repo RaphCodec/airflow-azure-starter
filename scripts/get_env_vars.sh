@@ -1,15 +1,3 @@
-#!/bin/bash
-set -euo pipefail
-
-# Set Airflow UID
-export AIRFLOW_UID=5001
-
-# Create necessary folders and set permissions
-for d in logs dags plugins config; do
-  mkdir -p "$d"
-  sudo chown -R $AIRFLOW_UID:0 "$d"
-done
-
 # Log in with the VM's managed identity
 az login --identity --output none
 
@@ -37,12 +25,4 @@ AAD_TENANT_ID=$AAD_TENANT_ID
 AAD_CLIENT_ID=$AAD_CLIENT_ID
 AAD_CLIENT_SECRET=$AAD_CLIENT_SECRET
 EOF
-
-# Start Airflow with Docker Compose
-sudo docker compose up -d
-
-# Permanently remove .env
-shred -u .env
-
-# Show running containers
-sudo docker ps
+# Note: Remember to securely delete the .env file after use
