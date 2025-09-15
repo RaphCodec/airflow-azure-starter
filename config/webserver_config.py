@@ -4,10 +4,12 @@ from airflow.providers.fab.auth_manager.security_manager.override import FabAirf
 from airflow.utils.log.logging_mixin import LoggingMixin
 
 
-# RATELIMIT_STORAGE_URI: "redis://redis:6379"
+# Set up Redis for Rate Limiting
+RATELIMIT_STORAGE_URI: "redis://redis:6379"
+
 AUTH_TYPE = AUTH_OAUTH
 AUTH_USER_REGISTRATION = True
-AUTH_USER_REGISTRATION_ROLE = "Admin"  # For testing, gives all new users admin rights, CHANGE TO Public FOR PRODUCTION
+AUTH_USER_REGISTRATION_ROLE = "Public"  # For testing, gives all new users admin rights, CHANGE TO Public FOR PRODUCTION
 AUTH_ROLES_SYNC_AT_LOGIN = True
 AUTH_ROLES_MAPPING = {
     "airflow_prod_admin": ["Admin"],
