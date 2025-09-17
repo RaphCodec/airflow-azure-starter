@@ -126,9 +126,11 @@ export DOMAIN_NAME='your-vm-dnsname'
 ./start_airflow.sh
 ```
 
-9. Open a new browser on your personal PC and navigate to the DNS of your Azure VM.  
+9. Open a new browser on your personal PC and navigate to the DNS of your Azure VM (found on in the overview section of your Azure VM).  
 
 10. Click on Sign in with Azure and Enjoy using Airflow!
+
+![Airflow Login](images/airflow_login.jpg)
 
 
 
