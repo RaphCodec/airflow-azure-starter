@@ -136,3 +136,4 @@ export DOMAIN_NAME='your-vm-dnsname'
 1. https://github.com/apache/airflow/discussions/48578
 2. https://www.nextlytics.com/blog/implementing-single-sign-on-sso-authentication-in-apache-airflow
 3. https://flask-appbuilder.readthedocs.io/en/latest/security.html
+4. Redis over commit memory warning fix - https://aws.plainenglish.io/resolving-redis-memory-overcommit-must-be-enabled-error-4b4d32ac050c
