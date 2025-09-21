@@ -70,6 +70,17 @@ x-airflow-common:
     AIRFLOW__API__WORKERS: 8
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: 'http://airflow-apiserver:8080/execution/'
+    
+    # configure Azure Blob as default storage for logs
+    AIRFLOW__LOGGING__REMOTE_LOGGING: 'true'
+    AIRFLOW__LOGGING__LOGGING_LEVEL: 'INFO'
+    # secret in keyvault needs to. be wasb://<container>@<storage-account>.blob.core.windows.net/
+    AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID: "wasb-default"
+    AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: "wasb-airflow-logs"
+    AIRFLOW__AZURE_REMOTE_LOGGING__REMOTE_WASB_LOG_CONTAINER: "airflow"
+    AIRFLOW__LOGGING__DELETE_LOCAL_LOGS: 'true'
+
+
     # yamllint disable rule:line-length
     # Use simple http server on scheduler for health checks
     # See https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/check-health.html#scheduler-health-check-server

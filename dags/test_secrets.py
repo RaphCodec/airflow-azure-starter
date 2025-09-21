@@ -28,15 +28,20 @@ PATH_TO_PYTHON_BINARY = sys.executable
     """,
 )
 def test_secrets():
-    # Fetch a variable from Key Vault via the secrets backend
-    # Omit the variable prefix "air-var". Airflow adds it automatically.
-    val = Variable.get("test-var")
-    assert val is not None, "Variable not found"
-    # Fetch a connection from Key Vault via the secrets backend
-    # Omit the connection prefix "air-conn". Airflow adds it automatically.
-    conn = BaseHook.get_connection("test-conn")
-    assert conn is not None, "Connection not found"
-    # Only print confirmation, not the value
-    print("✅ Key Vault backend working, variable and connection retrieved.")
+    from airflow.operators.python import PythonOperator
+
+    def check_secrets():
+        val = Variable.get("test-var")
+        assert val is not None, "Variable not found"
+        conn = BaseHook.get_connection("test-conn")
+        assert conn is not None, "Connection not found"
+        print("✅ Key Vault backend working, variable and connection retrieved.")
+        print("Variable keys:", val)
+        print("Connection password (secret):", conn)
+
+    check_secrets_task = PythonOperator(
+        task_id="check_secrets",
+        python_callable=check_secrets,
+    )
 
 run_this = test_secrets()
