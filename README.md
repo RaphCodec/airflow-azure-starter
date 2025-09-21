@@ -106,29 +106,49 @@ Example URI:
 sudo apt update
 sudo apt install git
 ```
-6. Clone this repo into you VM and cd into it.
+6. Clone this repo into you VM.
 ```bash
 sudo git clone https://github.com/RaphCodec/airflow-azure-starter
+```
+
+7. Run these commands to allow you to use docker, git, and own the files in the repo without needing to use sudo. Replace azureuser with your username. Then cd into the repo folder.
+
+```bash
+sudo chown -R azureuser:azureuser ~/airflow-azure-starter
+sudo chmod -R u+rwx ~/airflow-azure-starter
+```
+
+```bash
+sudo usermod -aG docker azureuser
+```
+
+After running the above command either log in and log out for the command to take effect or run the following.
+
+```bash
+newgrp docker
+```
+
+```bash
 cd airflow-azure-starter
 ```
 
-7. Create env variables for the KeyVault and Domain names. Add https:// before the dns name
+8. Create env variables for the KeyVault and Domain names. Add https:// before the dns name
 ```bash
 export KEYVAULT_NAME='your-keyvault-name'
 export DOMAIN_NAME='your-vm-dnsname'
 ```
 
-8. Start Airflow by running the start airflow bash file. Once all the containers are running the Airflow UI may take 1-2 minutes to be available.
+9. Start Airflow by running the start airflow bash file. Once all the containers are running the Airflow UI may take 1-2 minutes to be available.
 ``` bash
- sudo chmod +x start_airflow.sh
+chmod +x scripts/start_airflow.sh
 ```
 ``` bash
-./start_airflow.sh
+scripts/start_airflow.sh
 ```
 
-9. Open a new browser on your personal PC and navigate to the DNS of your Azure VM (found on in the overview section of your Azure VM).  
+10. Open a new browser on your personal PC and navigate to the DNS of your Azure VM (found on in the overview section of your Azure VM).  
 
-10. Click on Sign in with Azure and Enjoy using Airflow!
+11. Click on Sign in with Azure and Enjoy using Airflow!
 
 ![Airflow Login](images/airflow_login.jpg)
 
