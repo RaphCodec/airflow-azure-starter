@@ -76,6 +76,7 @@ x-airflow-common:
     AIRFLOW__LOGGING__LOGGING_LEVEL: 'INFO'
     # secret in keyvault needs to. be wasb://<container>@<storage-account>.blob.core.windows.net/
     AIRFLOW__LOGGING__REMOTE_LOG_CONN_ID: "wasb-default"
+    # this folder must start with wasb. without that there is an error with airflow connecting to the azure blob storage
     AIRFLOW__LOGGING__REMOTE_BASE_LOG_FOLDER: "wasb-airflow-logs"
     AIRFLOW__AZURE_REMOTE_LOGGING__REMOTE_WASB_LOG_CONTAINER: "airflow"
     AIRFLOW__LOGGING__DELETE_LOCAL_LOGS: 'true'
