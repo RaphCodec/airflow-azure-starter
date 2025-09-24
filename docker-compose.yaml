@@ -96,11 +96,14 @@ x-airflow-common:
     AAD_TENANT_ID: ${AAD_TENANT_ID}
     AAD_CLIENT_ID: ${AAD_CLIENT_ID}
     AAD_CLIENT_SECRET: ${AAD_CLIENT_SECRET}
+  # Use a project-local tmp directory mounted into container to avoid /tmp permission issues when using uv virtualenv
+  TMPDIR: /opt/airflow/tmp
   volumes:
-    - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
-    - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
-    - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
-    - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+  - ${AIRFLOW_PROJ_DIR:-.}/dags:/opt/airflow/dags
+  - ${AIRFLOW_PROJ_DIR:-.}/logs:/opt/airflow/logs
+  - ${AIRFLOW_PROJ_DIR:-.}/config:/opt/airflow/config
+  - ${AIRFLOW_PROJ_DIR:-.}/plugins:/opt/airflow/plugins
+  - ${AIRFLOW_PROJ_DIR:-.}/tmp:/opt/airflow/tmp
   user: "${AIRFLOW_UID:-50000}:0"
   depends_on:
     &airflow-common-depends-on
@@ -329,3 +332,5 @@ volumes:
   postgres-db-volume:
   caddy_data:
   caddy_config:
+  # Local tmp mapped into containers so TMPDIR is writable by AIRFLOW_UID
+  # This is a host folder (project/tmp) not a docker named volume.
