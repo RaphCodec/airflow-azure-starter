@@ -1,4 +1,5 @@
 apache-airflow-providers-fab[common.compat]
+apache-airflow-providers-git
 apache-airflow-providers-microsoft-azure
 dlt
 fastparquet

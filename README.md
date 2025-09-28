@@ -153,9 +153,23 @@ scripts/start_airflow.sh
 ![Airflow Login](images/airflow_login.jpg)
 
 
+## Setting Up GitHub Dag Bundle
+This section goes over setting up Github as remote dag bundle for your Airflow Instance.
+This exmaple uses deploy keys to connect your repo to airflow.
+
+1. Run this command to generate a private key pair.
+```bash
+ssh-keygen -t ed25519 -f ~/.ssh/airflow_deploy_key -C "airflow-github" -N ""
+```
+2. In you GitHub repo navigate to Settings -> Deploy Keys and create and new Deploy Key.  Paster the PUBLIC key in the Key Section.
+
+3. Replace the newline in the private key with \n and create an appropriately named connection in you airflow instance.
+See the youtube video below for reference.
+
 
 ### Reference Links that helped me resolve issues
 1. https://github.com/apache/airflow/discussions/48578
 2. https://www.nextlytics.com/blog/implementing-single-sign-on-sso-authentication-in-apache-airflow
 3. https://flask-appbuilder.readthedocs.io/en/latest/security.html
 4. Redis over commit memory warning fix - https://aws.plainenglish.io/resolving-redis-memory-overcommit-must-be-enabled-error-4b4d32ac050c
+5. https://www.youtube.com/watch?v=WjALlgE53dM ----- THIS IS FOR GIT DAG BUNDLES
