@@ -81,9 +81,7 @@ x-airflow-common:
     AIRFLOW__LOGGING__DELETE_LOCAL_LOGS: 'true'
 
     # Configure the Git DAG bundle to pull DAGs from a Git repository.
-    AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST: >
-      '[{"name": "airflow-azure-starter-dags", "classpath": "airflow.providers.git.bundles.git.GitDagBundle", "kwargs": {"subdir": "dags", "tracking_ref": "main", "refresh_interval": 300, "git_conn_id": "git-starter-dags"}}]'
-
+    AIRFLOW__DAG_PROCESSOR__DAG_BUNDLE_CONFIG_LIST: '[{"name": "airflow-azure-starter-dags", "classpath": "airflow.providers.git.bundles.git.GitDagBundle", "kwargs": {"subdir": "dags", "tracking_ref": "main", "refresh_interval": 300, "git_conn_id": "git-starter-dags"}}]'
 
     # yamllint disable rule:line-length
     # Use simple http server on scheduler for health checks
