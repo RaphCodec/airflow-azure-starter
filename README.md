@@ -1,5 +1,5 @@
 # Airflow-Azure-Starter
-This repo is intended to help Airflow users get up and running on an Azure VM with the Airflow LocalExecutor.  This setup uses LocalExcutor as that is good for a single VM setup.  This setup can work for production workloads for small teams, but if/when scaling is an issue users should switch to the CeleryExecutor or KubernetesExecutor.  This repo will not demonstrate how to do that explicitly. However, many components about how to connect Airflow to Azure KeyVault and how to use Microsoft Entra ID OAuth will be covered and can be reused or modified for larger scale deployments.
+This repo is intended to help Airflow users get up and running on an Azure VM with the Airflow LocalExecutor.  This setup uses LocalExecutor as that is good for a single VM setup.  This setup can work for production workloads for small teams, but if/when scaling is an issue users should switch to the CeleryExecutor or KubernetesExecutor.  This repo will not demonstrate how to do that explicitly. However, many components about how to connect Airflow to Azure KeyVault and how to use Microsoft Entra ID OAuth will be covered and can be reused or modified for larger scale deployments.
 
 ## Requirements
 - Microsoft Entra ID
@@ -34,7 +34,7 @@ The VM set up is complete for now. Next we set up the Entra App.
 
 
 ## Key Vault
-Microsft has a good guide on how to create and connect a KeyVault to an Azure VM and I followed it to set up my key vault. Note that if the steps above to setup up the VM were followed then the VM already has a System Managed Identity assigned to it.
+Microsoft has a good guide on how to create and connect a KeyVault to an Azure VM and I followed it to set up my key vault. Note that if the steps above to set up the VM were followed then the VM already has a System Managed Identity assigned to it.
 
 If you wish to test out if your key vault is connected to your VM and need to ssh into your VM, the command to do so is in the "Running Airflow on the VM" section below.
 
@@ -44,7 +44,7 @@ Once the Key vault is created and you confirmed that it works, you need to add o
 
 Note if you don't have permission to create or view secrets you need to assign yourself permission to do so similarly as you did to grant the system managed identity for your Azure VM access to key vault.
 
-1. Navigate to Objects in your vault. Click on Screts. Create a new secret named FERNET-KEY.
+1. Navigate to Objects in your vault. Click on Secrets. Create a new secret named FERNET-KEY.
 2. Run the below command to generate a fernet key to use as the value for your secret and save it as the secret value.
 ```bash
 python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"
@@ -75,7 +75,7 @@ Example URI:
 
 ![alt text](images/client_secret.jpg)
 
-7. Once the secret is created immediately copy the Value (you won't be able to copy it later) of the secret and go the KeyVault. In your Keyvault, create a new secret called AAD-CLIENT-SECRET and paste the client secret value that you just copied in the Secret Value Section
+7. Once the secret is created immediately copy the Value (you won't be able to copy it later) of the secret and go to the KeyVault. In your KeyVault, create a new secret called AAD-CLIENT-SECRET and paste the client secret value that you just copied in the Secret Value Section
 
 8. Next Go back to your app and click on "App Roles"
 
@@ -94,19 +94,19 @@ Example URI:
 
 ## Running Airflow on the VM
 
-1. Open a terminal on your PC. CD into the directory where your ssh key is. connect to your VM using SSH:
+1. Open a terminal on your PC. cd into the directory where your SSH key is. Connect to your VM using SSH:
     ```sh
     ssh -i <your-key-name>.pem  username@<your-vm-ip>
     ```
 2. Follow the instructions on [this page](https://docs.docker.com/engine/install/ubuntu/) to install Docker on your VM.  
 3. Install [Docker Compose](https://docs.docker.com/compose/install/) on your VM.
-4. Install [Azure Cli](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?view=azure-cli-latest&pivots=apt) if not installed when setting up KeyVault.
+4. Install [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?view=azure-cli-latest&pivots=apt) if not installed when setting up KeyVault.
 5. Install Git on the VM.
 ```bash
 sudo apt update
 sudo apt install git
 ```
-6. Clone this repo into you VM.
+6. Clone this repo into your VM.
 ```bash
 sudo git clone https://github.com/RaphCodec/airflow-azure-starter
 ```
@@ -146,7 +146,7 @@ chmod +x scripts/start_airflow.sh
 scripts/start_airflow.sh
 ```
 
-10. Open a new browser on your personal PC and navigate to the DNS of your Azure VM (found on in the overview section of your Azure VM).  
+10. Open a new browser on your personal PC and navigate to the DNS of your Azure VM (found in the overview section of your Azure VM).  
 
 11. Click on Sign in with Azure and Enjoy using Airflow!
 
@@ -154,17 +154,20 @@ scripts/start_airflow.sh
 
 
 ## Setting Up GitHub Dag Bundle
-This section goes over setting up Github as remote dag bundle for your Airflow Instance.
-This exmaple uses deploy keys to connect your repo to airflow.
+This section goes over setting up GitHub as remote dag bundle for your Airflow Instance.
+This example uses deploy keys to connect your repo to airflow.
 
 1. Run this command to generate a private key pair.
 ```bash
 ssh-keygen -t ed25519 -f ~/.ssh/airflow_deploy_key -C "airflow-github" -N ""
 ```
-2. In you GitHub repo navigate to Settings -> Deploy Keys and create and new Deploy Key.  Paster the PUBLIC key in the Key Section.
+2. In your GitHub repo navigate to Settings -> Deploy Keys and create a new Deploy Key.  Paste the PUBLIC key in the Key Section.
 
-3. Replace the newline in the private key with \n and create an appropriately named connection in you airflow instance.
+3. Replace the newline in the private key with \n and create an appropriately named connection in your airflow instance.
 See the youtube video below for reference.
+
+## What is not Included in this Repo
+- A dedicated Postgres backend.  There is Postgres in the docker compose file, but for a proper production setup you should have a Postgres database outside of the docker compose and connect Airflow to it.
 
 
 ### Reference Links that helped me resolve issues
